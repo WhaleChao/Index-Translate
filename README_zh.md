@@ -1,7 +1,7 @@
 <p align="center"><a href="README.md">English</a> · 中文</p>
 
 <h1 align="center">Index-Translate</h1>
-<p align="center"><strong>多语言、多模态翻译模型家族</strong><br>图文、语音、可控配音与长文档翻译</p>
+<p align="center"><strong>多语言、多模态翻译模型家族</strong><br>多模态翻译（视觉图像与音频语音）、可控配音与长文档翻译</p>
 
 <p align="center">
   <a href="https://index-translate.bilibili.com/">🌐&nbsp;Demo</a> ·
@@ -17,12 +17,12 @@
 > [!TIP]
 > 🚀 **官方免费 API 现已开放！** 无需本地显卡环境，直接免费调用 **Index-Translate-35B-A3B** 旗舰翻译模型。完全兼容 OpenAI 接口规范（Base URL: `https://index-translate.bilibili.com/v1`）。支持免依赖脚本即开即用：`python inference/llm/call_api.py "你好，世界" --target en`！👉 [快速上手指南](#方式一免费公网-api-快速调用无需本地-gpu)
 
-Index-Translate 是基于 Qwen3.5 构建的多语言、多模态翻译模型家族。文本模型覆盖**150 种语言**，支持术语、格式、保留内容等翻译指令，并将共同的多语基础扩展到视觉图像、语音、音节可控翻译和长文档翻译。
+Index-Translate 是基于 Qwen3.5 构建的多语言、多模态翻译模型家族。文本模型覆盖**150 种语言**，支持术语、格式、保留内容等翻译指令，并将统一的多语基座扩展到多模态翻译（视觉图像与音频语音）、音节可控翻译和长文档翻译。
 
-- **Index-Translate**：翻译文本、多模态图像（基于原生视觉编码器，零 OCR 依赖）、结构化内容与社区表达。
-- **Index-Echo**：生成目标语言字幕或配音，配音时参考源语音的说话人声音特征。
-- **Index-Homura**：根据指定的目标音节数调整译文。
-- **Index-NativeLong**：输入完整文档，利用上下文维持前后联系。
+- **Index-Translate（文本与多模态视觉）**：覆盖 150 种语言的文本翻译，原生支持多模态图像翻译（基于原生视觉编码器，零 OCR 依赖）、结构化内容、硬/软指令遵循与社区文化表达。
+- **Index-Echo（多模态音频语音）**：端到端语音转字幕（S2TT）与跨语言语音克隆配音（S2ST），在翻译的同时精准保持源语音的说话人音色特征。
+- **Index-Homura（音节可控配音）**：根据指定的目标音节数自适应调整译文，实现音节级对齐。
+- **Index-NativeLong（超长文档）**：支持超长上下文，输入完整文档，利用全局上下文维持人名术语前后一致。
 
 <p align="center"><img src="docs/assets/benchmark-radar.zh.svg" width="760" alt="Index-Translate 35B-A3B preview、9B 与 2B 文本模型的七维翻译能力对比"></p>
 
@@ -30,7 +30,7 @@ Index-Translate 是基于 Qwen3.5 构建的多语言、多模态翻译模型家�
 
 雷达图采用官网七类聚合分数，在完整对比模型集合上固定各维度的 min–max 范围进行归一化，并非准确率。灰色虚线是各维度非 Index 模型的最高值组合，不代表一个实际模型。[原始聚合分数](docs/assets/seven_category_scores_raw.csv) · [图表说明](docs/assets/README.md) · [单项评测结果](docs/evaluation_zh.md)。
 
-[最新动态](#最新动态) · [⚡ 免费 API](#方式一免费公网-api-快速调用无需本地-gpu) · [🖼️ 图片翻译](#多模态图片翻译vision) · [模型下载](#模型下载) · [快速上手](#快速上手) · [指令遵循](#指令遵循与约束翻译) · [精选案例](#精选案例) · [评测结果](#评测结果) · [Benchmarks](#benchmarks) · [应用工具](#应用工具) · [TODO](#todo) · [论文与引用](#论文与引用)
+[最新动态](#最新动态) · [⚡ 免费 API](#方式一免费公网-api-快速调用无需本地-gpu) · [✨ 多模态翻译](#多模态翻译案例视觉图像与音频语音) · [模型下载](#模型下载) · [快速上手](#快速上手) · [指令遵循](#指令遵循与约束翻译硬约束--软约束) · [精选案例](#精选案例) · [评测结果](#评测结果) · [Benchmarks](#benchmarks) · [应用工具](#应用工具) · [TODO](#todo) · [论文与引用](#论文与引用)
 
 ## 最新动态
 
@@ -52,13 +52,13 @@ Index-Translate 是基于 Qwen3.5 构建的多语言、多模态翻译模型家�
 
 下表提供 **2B、9B 与 35B-A3B（preview）** 文本模型权重，评测结果见[完整评测表](docs/evaluation_zh.md)。
 
-| 模型 | 任务与发布包覆盖 | Hugging Face | ModelScope | 推理 |
-|---|---|---|---|---|
-| **Index-Translate** | 150 种语言的文本与多模态图片翻译、指令遵循 | [2B](https://huggingface.co/IndexTeam/Index-Translate-2B) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview) ([⚡免费API](#方式一免费公网-api-快速调用无需本地-gpu)) | [2B](https://modelscope.cn/models/IndexTeam/Index-Translate-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Translate-9B) · [35B-A3B (preview)](https://modelscope.cn/models/IndexTeam/Index-Translate-35B-A3B-preview) | [使用说明](inference/llm/README_zh.md) · [免费API](inference/llm/call_api.py) |
-| **Index-Echo S2TT** | 语音转字幕；发布脚本支持中→英/日/西 | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-2B) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2TT-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2TT-9B) | [使用说明](inference/echo-s2tt/README_zh.md) |
-| **Index-Echo S2ST** | 语音配音；中→英/西/日，英→中/西/日 | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-2B) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2ST-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2ST-9B) | [使用说明](inference/echo-s2st/README_zh.md) |
-| **Index-Homura** | 按指定目标音节数翻译 | [2B](https://huggingface.co/IndexTeam/Index-Homura-2B) · [9B](https://huggingface.co/IndexTeam/Index-Homura-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Homura-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Homura-9B) | [使用说明](inference/llm/README_zh.md) |
-| **Index-NativeLong** | 长文档；固定模板支持中↔英、中↔日 | [2B](https://huggingface.co/IndexTeam/Index-Nailong-2B) · [9B](https://huggingface.co/IndexTeam/Index-Nailong-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Nailong-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Nailong-9B) | [使用说明](inference/llm/README_zh.md) |
+| 分类 | 模型 | 任务与发布包覆盖 | Hugging Face | ModelScope | 推理指引 |
+|---|---|---|---|---|---|
+| **文本与多模态视觉** | **Index-Translate** | 150 种语言的文本与多模态图片翻译、指令遵循 | [2B](https://huggingface.co/IndexTeam/Index-Translate-2B) · [9B](https://huggingface.co/IndexTeam/Index-Translate-9B) · [35B-A3B (preview)](https://huggingface.co/IndexTeam/Index-Translate-35B-A3B-preview) ([⚡免费API](#方式一免费公网-api-快速调用无需本地-gpu)) | [2B](https://modelscope.cn/models/IndexTeam/Index-Translate-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Translate-9B) · [35B-A3B (preview)](https://modelscope.cn/models/IndexTeam/Index-Translate-35B-A3B-preview) | [使用说明](inference/llm/README_zh.md) · [免费API](inference/llm/call_api.py) · [图片教程](docs/image_translate_zh.md) |
+| **多模态音频语音** | **Index-Echo S2TT** | 语音转字幕；发布脚本支持中→英/日/西 | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-2B) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2TT-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2TT-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2TT-9B) | [使用说明](inference/echo-s2tt/README_zh.md) |
+| **多模态音频语音** | **Index-Echo S2ST** | 语音配音；中→英/西/日，英→中/西/日（音色克隆） | [2B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-2B) · [9B](https://huggingface.co/IndexTeam/Index-Echo-S2ST-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2ST-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Echo-S2ST-9B) | [使用说明](inference/echo-s2st/README_zh.md) |
+| **可控配音** | **Index-Homura** | 按指定目标音节数翻译 | [2B](https://huggingface.co/IndexTeam/Index-Homura-2B) · [9B](https://huggingface.co/IndexTeam/Index-Homura-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Homura-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Homura-9B) | [使用说明](inference/llm/README_zh.md) |
+| **超长文档** | **Index-NativeLong** | 长文档；固定模板支持中↔英、中↔日 | [2B](https://huggingface.co/IndexTeam/Index-Nailong-2B) · [9B](https://huggingface.co/IndexTeam/Index-Nailong-9B) | [2B](https://modelscope.cn/models/IndexTeam/Index-Nailong-2B) · [9B](https://modelscope.cn/models/IndexTeam/Index-Nailong-9B) | [使用说明](inference/llm/README_zh.md) |
 
 **命名说明：** Index-NativeLong 的实际模型仓库 ID 为 `IndexTeam/Index-Nailong-2B` 和 `IndexTeam/Index-Nailong-9B`，运行命令请使用这两个 ID。语音与长文档发布包的语言覆盖见上表，文本模型的 150 种语言覆盖不等同于每个专门模型的接口覆盖。
 
@@ -133,9 +133,9 @@ curl https://index-translate.bilibili.com/v1/responses \
 ```
 
 > [!TIP]
-> 🖼️ **多模态图片翻译开箱即用（支持 Web Demo / Python 脚本 / API）！**  
-> 基于原生视觉编码器，**零 OCR 依赖**，高保真还原版式与图文语境。  
-> 👉 **[【图文使用教程】多模态图片翻译完整指南（含 API 调用、本地部署与实测案例）](docs/image_translate_zh.md)**
+> ✨ **多模态翻译现已全面开放（视觉图像与音频语音）！**  
+> - 🖼️ **视觉多模态（图片翻译）**：全系列（2B / 9B / 35B）基于原生视觉编码器，**零 OCR 依赖**，高保真还原版式与图文语境。👉 **[【图文使用教程】多模态图片翻译完整指南（含 API 调用、本地部署与实测案例）](docs/image_translate_zh.md)**  
+> - 🎙️ **音频多模态（语音字幕与配音）**：Index-Echo 支持端到端语音转字幕（S2TT）与声音克隆配音（S2ST）。👉 **[S2TT 字幕教程](inference/echo-s2tt/README_zh.md)** · **[S2ST 配音教程](inference/echo-s2st/README_zh.md)**
 
 > [!TIP]
 > 🌐 **想要在浏览器一键双语畅读网页？沉浸式翻译 (Immersive Translate) 开箱即用（支持 Windows / macOS / Linux）！**
@@ -245,7 +245,40 @@ python inference/llm/syllable_translate.py \
 
 以下案例来自[官方 Demo](https://index-translate.bilibili.com/?p=/site/home.html#benchmark-cases)，用于展示具体样本中的输出。完整模型对照与任务设置见 Demo 和技术报告。
 
-### 翻译内容，同时保留指定标签
+### 多模态翻译精选案例（视觉与音频）
+
+#### 1. 视觉多模态：软件 UI、技术图表与实景路牌（零 OCR 依赖）
+
+**要求：** 识别图像中的文字，深度结合视觉上下文与版面布局，Index-Translate 全系列（2B / 9B / 35B）端到端直接输出高质量译文。
+
+| 图像类型 | 图像源文字 (英文) | Index-Translate (2B / 9B / 35B) 译文 (中文) | 优势特性 |
+|---|---|---|---|
+| **软件设置截图** | "Enable hardware-accelerated GPU scheduling (requires restart)" | 启用硬件加速 GPU 计划（需要重启） | 精准识别系统 UI 选项，语义贴切 |
+| **技术流程图** | "Client -> Load Balancer -> Worker Pool (Least-Conn Routing)" | 客户端 → 负载均衡器 → 工作节点池（最小连接数路由） | 识别流程指向，保留系统架构术语 |
+| **实景街道路牌** | "Pedestrian Crossing Ahead · Speed Limit 30 mph" | 前方行人过街通道 · 限速 30 英里/小时 | 复杂自然实景抗畸变，度量单位标准转换 |
+
+全系列（2B / 9B / 35B）均提供对应 GGUF `mmproj` 视觉权重，无需配置任何 OCR 工具链，直接在 [在线 Demo](https://index-translate.bilibili.com/?p=/site/translate.html) 粘贴或上传图片即可体验。详细教程见 [多模态图片翻译指南](docs/image_translate_zh.md)。
+
+#### 2. 音频多模态：Index-Echo 语音配音与多语言字幕演示
+
+![Index-Echo 评测](docs/assets/echo_benchmark_overview.zh.svg)
+
+S2ST 图对比落地版 2B、级联 Pipeline 与 SeamlessM4T-v2，与报告中的六方向同规模对比口径不同；SeamlessM4T-v2 未做音色克隆。
+
+<table>
+<tr><th>语音配音 (S2ST)</th><th>多语言字幕 (S2TT)</th></tr>
+<tr>
+<td align="center"><a href="https://index-translate.bilibili.com/?p=/site/assets/blog/echo-demo.mp4"><img src="docs/assets/echo-s2st.png" height="180" alt="观看 Index-Echo 英文视频转日语配音演示"></a></td>
+<td align="center"><a href="https://index-translate.bilibili.com/?p=/site/assets/blog/echo-demo-s2tt.mp4"><img src="docs/assets/echo-s2tt.png" height="180" alt="观看 Index-Echo 多语言字幕演示"></a></td>
+</tr>
+<tr><td>英文视频搭配日语配音（音色克隆）</td><td>同一视频搭配多种语言的译文字幕</td></tr>
+</table>
+
+点击预览图观看视频，或[进入 Index-Echo 在线体验](https://index-translate.bilibili.com/?p=/site/index.html&lang=zh)。官网演示与已发布推理接口的语言覆盖有所不同，发布接口支持范围见[模型下载表](#模型下载)。
+
+### 文本与指令遵循案例
+
+#### 3. 翻译内容，同时保留指定标签（JSON 格式硬约束）
 
 **要求：** 将下面的 JSON 翻译为韩文，保留结构、星号和中文话题标签。
 
@@ -261,19 +294,7 @@ python inference/llm/syllable_translate.py \
 
 公告标题被翻译，用户指定的话题标签保持原样。[体验文本翻译](https://index-translate.bilibili.com/?p=/site/translate.html&lang=zh)。
 
-### 多模态图片翻译（Vision）：软件 UI 与技术图表（零 OCR 依赖）
-
-**要求：** 识别图像中的文字，深度结合视觉上下文与版面布局，全系列（2B / 9B / 35B）端到端直接输出高质量译文。
-
-| 图像类型 | 图像源文字 (英文) | Index-Translate (2B / 9B / 35B) 译文 (中文) | 优势特性 |
-|---|---|---|---|
-| **软件设置截图** | "Enable hardware-accelerated GPU scheduling (requires restart)" | 启用硬件加速 GPU 计划（需要重启） | 精准识别系统 UI 选项，语义贴切 |
-| **技术流程图** | "Client -> Load Balancer -> Worker Pool (Least-Conn Routing)" | 客户端 → 负载均衡器 → 工作节点池（最小连接数路由） | 识别流程指向，保留系统架构术语 |
-| **实景街道路牌** | "Pedestrian Crossing Ahead · Speed Limit 30 mph" | 前方行人过街通道 · 限速 30 英里/小时 | 复杂自然实景抗畸变，度量单位标准转换 |
-
-全系列（2B / 9B / 35B）均提供对应 GGUF `mmproj` 视觉权重，无需配置任何 OCR 工具链，直接在 [在线 Demo](https://index-translate.bilibili.com/?p=/site/translate.html) 粘贴或上传图片即可体验。详细教程见 [多模态图片翻译指南](docs/image_translate_zh.md)。
-
-### 翻出社区表达中的意思
+#### 4. 翻出社区表达中的意思（MEME 与文化俚语）
 
 **原文：** 狒瘾犯了就去打。在这个游戏社区语境中，“狒瘾”指想玩《最终幻想 XIV》的劲头又上来了。
 
@@ -283,7 +304,9 @@ python inference/llm/syllable_translate.py \
 | Index-Translate-2B | Go play when my FFXIV addiction kicks in. |
 | Hy-MT2-7B | If you get monkey addiction, go fight. |
 
-### 按指定音节数调整译文
+### 专项场景案例（可控配音与长文档）
+
+#### 5. 按指定音节数调整译文（Index-Homura）
 
 **原文：** 生活两天，是一种什么体验。同一句话设置三个目标长度，Index-Homura-9B 给出不同措辞：
 
@@ -295,7 +318,7 @@ python inference/llm/syllable_translate.py \
 
 这三个样例均命中目标；整体上音节控制仍是近似约束，实际配音时长还受语速与停顿影响。[体验 Index-Homura](https://index-translate.bilibili.com/?p=/site/syllable.html&lang=zh)。
 
-### 长文翻到后面，人名仍然一致
+#### 6. 长文翻到后面，人名仍然一致（Index-NativeLong）
 
 在一篇约 32K tokens 的奇幻文本中，“王妃”是人物姓名。下表对比原生全文翻译，与同一 9B 模型采用相邻上下文及自动词表的分块翻译。
 
@@ -306,23 +329,6 @@ python inference/llm/syllable_translate.py \
 | 84.8% | Wang Fei | The Queen Consort |
 
 位置按原文字符计算。原生全文译文在这些位置保持了人名；官网也展示了使用外部词表修复分块结果的情况。[体验 Index-NativeLong](https://index-translate.bilibili.com/?p=/site/doc.html&lang=zh)。
-
-### 观看语音翻译演示
-
-![Index-Echo 评测](docs/assets/echo_benchmark_overview.zh.svg)
-
-S2ST 图对比落地版 2B、级联 Pipeline 与 SeamlessM4T-v2，与报告中的六方向同规模对比口径不同；SeamlessM4T-v2 未做音色克隆。
-
-<table>
-<tr><th>语音配音</th><th>多语言字幕</th></tr>
-<tr>
-<td align="center"><a href="https://index-translate.bilibili.com/?p=/site/assets/blog/echo-demo.mp4"><img src="docs/assets/echo-s2st.png" height="180" alt="观看 Index-Echo 英文视频转日语配音演示"></a></td>
-<td align="center"><a href="https://index-translate.bilibili.com/?p=/site/assets/blog/echo-demo-s2tt.mp4"><img src="docs/assets/echo-s2tt.png" height="180" alt="观看 Index-Echo 多语言字幕演示"></a></td>
-</tr>
-<tr><td>英文视频搭配日语配音</td><td>同一视频搭配多种语言的译文</td></tr>
-</table>
-
-点击预览图观看视频，或[进入 Index-Echo](https://index-translate.bilibili.com/?p=/site/index.html&lang=zh)体验。官网演示与已发布推理接口的语言覆盖有所不同，发布接口支持范围见[模型下载表](#模型下载)。
 
 ## 评测结果
 
@@ -392,8 +398,9 @@ NAtIveLong 不包含小说原文或参考译文；BWB 需自行获取官方语�
 ## 应用工具
 
 - **[沉浸式翻译配置教程](docs/immersive_translate_zh.md)：** 图文教程，支持 Windows（提供一键 `.bat` 启动脚本）/ macOS / Linux，通过公网 35B 免费 API 或本地模型为「沉浸式翻译 (Immersive Translate)」插件提供高品质网页双语对照翻译。
+- **[多模态图片翻译指南](docs/image_translate_zh.md)：** 原生视觉编码器使用详解、本地部署与 OpenAI API 格式调用说明。
+- **[多模态视频配音管线](video-dub/README_zh.md)：** 视频音频提取、人声分离、语音切分、翻译配音及时间轴对齐完整工具链。
 - **[内置浏览器扩展](extension/README_zh.md)：** 官方内置极简网页翻译插件，支持 Chrome、Edge 与 Firefox，纯原生 JS 零构建。
-- **[视频配音管线](video-dub/README_zh.md)：** 完成音频提取、人声分离、语音切分、翻译配音及时间轴对齐，输出配音视频。
 
 ## 社区生态与友情链接
 
