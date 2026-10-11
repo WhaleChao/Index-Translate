@@ -395,6 +395,12 @@ NAtIveLong 不包含小说原文或参考译文；BWB 需自行获取官方语�
 - **[内置浏览器扩展](extension/README_zh.md)：** 官方内置极简网页翻译插件，支持 Chrome、Edge 与 Firefox，纯原生 JS 零构建。
 - **[视频配音管线](video-dub/README_zh.md)：** 完成音频提取、人声分离、语音切分、翻译配音及时间轴对齐，输出配音视频。
 
+## 社区生态与友情链接
+
+感谢社区开发者基于 Index-Translate 构建的开源项目与应用：
+
+- **[simul-subtitle](https://github.com/KorenKrita/simul-subtitle)**（by [@KorenKrita](https://github.com/KorenKrita)）：Android 实时同传字幕应用。在手机端实时识别日语/英语，通过 Index-Translate 翻译成 22 种语言，并支持以悬浮窗形式在任意 App 之上实时显示。
+
 ## 交流社区
 
 欢迎加入 [QQ 交流群（960123527）](https://qm.qq.com/q/xSASqaiEGA)，交流使用体验、反馈问题与建议。也可以扫描下方二维码加入群聊。

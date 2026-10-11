@@ -393,6 +393,12 @@ See the [full evaluation settings](docs/evaluation.md) and [IFMTBench preprocess
 - **[Native Browser extension](extension/README.md):** lightweight built-in webpage translator supporting Chrome, Edge, and Firefox.
 - **[Video dubbing pipeline](video-dub/README.md):** extract audio, separate vocals, segment speech, translate and dub, then align the result to the original video.
 
+## Community & Ecosystem Projects
+
+Open-source projects and applications built with Index-Translate:
+
+- **[simul-subtitle](https://github.com/KorenKrita/simul-subtitle)** (by [@KorenKrita](https://github.com/KorenKrita)): Real-time on-device subtitle translation for Android. Recognizes Japanese/English speech, translates into 22 languages powered by Index-Translate, and renders floating live subtitles over any app.
+
 ## Community
 
 Join the [QQ group (960123527)](https://qm.qq.com/q/xSASqaiEGA) for discussion and feedback. You can also scan the QR code below to join.
