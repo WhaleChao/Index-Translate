@@ -371,34 +371,48 @@ def run_proxy_server(port: int = 8080, api_base: str = DEFAULT_API_BASE, host: s
                 method="POST",
             )
 
+            response_started = False
             try:
-                with urllib.request.urlopen(req, timeout=120) as resp:
-                    self.send_response(resp.status)
+                try:
+                    resp = urllib.request.urlopen(req, timeout=120)
+                except urllib.error.HTTPError as e:
+                    # Forward HTTP error responses and close them just like 200s.
+                    resp = e
+                with resp:
+                    # Reserve the response before writing headers: a partial
+                    # header write must never be followed by a second status.
+                    response_started = True
+                    self.close_connection = True
+                    self.send_response(resp.code)
                     self.send_header("Access-Control-Allow-Origin", "*")
                     for k, v in resp.headers.items():
-                        if k.lower() in ("content-type", "cache-control"):
+                        if k.lower() in ("content-type", "cache-control", "content-encoding", "retry-after"):
                             self.send_header(k, v)
+                    self.send_header("Connection", "close")
                     self.end_headers()
 
                     while True:
-                        chunk = resp.read(1024)
+                        # Return available bytes instead of waiting to fill 1024.
+                        chunk = resp.read1(4096)
                         if not chunk:
                             break
                         self.wfile.write(chunk)
                         self.wfile.flush()
-            except urllib.error.HTTPError as e:
-                err_data = e.read()
-                self.send_response(e.code)
-                self.send_header("Access-Control-Allow-Origin", "*")
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(err_data)
             except Exception as e:
-                self.send_response(502)
-                self.send_header("Access-Control-Allow-Origin", "*")
-                self.send_header("Content-Type", "application/json")
-                self.end_headers()
-                self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
+                self.close_connection = True
+                if response_started:
+                    # Closing leaves the stream incomplete; never invent DONE.
+                    return
+                try:
+                    self.send_response(502)
+                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.send_header("Content-Type", "application/json")
+                    self.send_header("Connection", "close")
+                    self.end_headers()
+                    self.wfile.write(json.dumps({"error": str(e)}).encode("utf-8"))
+                except OSError:
+                    # The downstream may have disconnected during error output.
+                    self.close_connection = True
 
     server = http.server.ThreadingHTTPServer((host, port), ProxyHandler)
     # 0.0.0.0 / :: are wildcard binds; show a URL that actually works locally.
@@ -417,6 +431,7 @@ def run_proxy_server(port: int = 8080, api_base: str = DEFAULT_API_BASE, host: s
         server.serve_forever()
     except KeyboardInterrupt:
         print("\nStopping proxy...")
+    finally:
         server.server_close()
 
 
