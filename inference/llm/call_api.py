@@ -151,7 +151,9 @@ def build_prompt(
     free public API is prompted exactly like a local server. Deliberately stdlib-only:
     this script must run without third-party packages.
     """
-    tgt_name = LANG_NAMES.get(target_lang.lower(), target_lang)
+    tgt_name = LANG_NAMES.get(target_lang.lower())
+    if tgt_name is None:
+        raise ValueError(f"unknown target language code: {target_lang}\n")
     has_source = bool(source_lang) and source_lang.lower() not in ("auto", "")
     src_name = LANG_NAMES.get(source_lang.lower(), source_lang) if has_source else ""
 
@@ -487,7 +489,9 @@ def main():
             sys.stderr.write(f"Image load error: {e}\n")
             sys.exit(1)
 
-        tgt_name = LANG_NAMES.get(args.target.lower(), args.target)
+        tgt_name = LANG_NAMES.get(args.target.lower())
+        if tgt_name is None:
+            raise ValueError(f"unknown target language code: {target_lang}\n")
         has_source = bool(args.source) and args.source.lower() not in ("auto", "")
         src_name = LANG_NAMES.get(args.source.lower(), args.source) if has_source else ""
 
