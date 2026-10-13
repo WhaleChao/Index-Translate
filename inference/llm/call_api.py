@@ -153,7 +153,8 @@ def build_prompt(
     """
     tgt_name = LANG_NAMES.get(target_lang.lower())
     if tgt_name is None:
-        raise ValueError(f"unknown target language code: {target_lang}\n")
+        sys.stderr.write(f"unknown target language code: {target_lang}\n")
+        sys.exit(2)
     has_source = bool(source_lang) and source_lang.lower() not in ("auto", "")
     src_name = LANG_NAMES.get(source_lang.lower(), source_lang) if has_source else ""
 
@@ -491,7 +492,8 @@ def main():
 
         tgt_name = LANG_NAMES.get(args.target.lower())
         if tgt_name is None:
-            raise ValueError(f"unknown target language code: {target_lang}\n")
+            sys.stderr.write(f"unknown target language code: {args.target}\n")
+            sys.exit(2)
         has_source = bool(args.source) and args.source.lower() not in ("auto", "")
         src_name = LANG_NAMES.get(args.source.lower(), args.source) if has_source else ""
 
