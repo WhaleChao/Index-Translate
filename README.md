@@ -41,10 +41,10 @@ The radar includes **35B-A3B (preview), 9B, and 2B**, with fixed per-axis min–
 ## TODO
 
 - [x] Release official quantized builds (GGUF for llama.cpp local inference, FP8 and NVFP4 for vLLM serving) for the whole family.
-- [ ] Release the official version of Index-Translate-35B-A3B.
 - [x] Release instTrans, MEME, SandGlass and NAtIveLong data/metadata and evaluation code; see [Benchmarks](#benchmarks).
-- [ ] Add support for more languages to Index-Echo.
-- [ ] Release larger models.
+- [ ] Index-Translate main model to support unified multimodal translation: merge audio and video translation as well as long documents into the main model.
+- [ ] Index-Echo-S2ST: add support for more languages.
+- [ ] Scaling out (100B+).
 
 ## Models
 

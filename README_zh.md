@@ -43,10 +43,10 @@ Index-Translate 是基于 Qwen3.5 构建的多语言、多模态翻译模型家�
 ## TODO
 
 - [x] 发布全家族官方量化版本（GGUF 用于 llama.cpp 本地推理，FP8 与 NVFP4 用于 vLLM 部署）。
-- [ ] 发布 Index-Translate-35B-A3B 正式版。
 - [x] 发布 instTrans、MEME、SandGlass 与 NAtIveLong 的数据／元数据和评测代码，见 [Benchmarks](#benchmarks)。
-- [ ] 为 Index-Echo 增加更多语种支持。
-- [ ] 发布更大规模的模型。
+- [ ] Index-Translate 主模型支持统一多模态翻译：将音频和视频翻译以及长文本合并进主模型。
+- [ ] Index-Echo-S2ST：增加更多语种。
+- [ ] Scaling out (100B+)。
 
 ## 模型下载
 
