@@ -183,7 +183,10 @@ def trans_prompt(
 
         只输出译文，不要有任何额外说明。
     """
-    tgt_name = LANG_NAMES.get(target_lang.lower(), target_lang)
+    tgt_name = LANG_NAMES.get(target_lang.lower())
+    if tgt_name is None:
+        sys.stderr.write(f"unknown target language code: {target_lang}\n")
+        sys.exit(2)
     has_source = source_lang and source_lang.lower() not in ("auto", "")
     src_name = LANG_NAMES.get(source_lang.lower(), source_lang) if has_source else ""
 
@@ -322,7 +325,10 @@ def main() -> None:
             sys.stderr.write(f"Image load error: {e}\n")
             sys.exit(1)
 
-        tgt_name = LANG_NAMES.get(args.target.lower(), args.target)
+        tgt_name = LANG_NAMES.get(args.target.lower())
+        if tgt_name is None:
+            sys.stderr.write(f"unknown target language code: {args.target}\n")
+            sys.exit(2)
         has_source = bool(args.source) and args.source.lower() not in ("auto", "")
         src_name = LANG_NAMES.get(args.source.lower(), args.source) if has_source else ""
 
